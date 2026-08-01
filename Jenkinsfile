@@ -1,16 +1,11 @@
 pipeline {
     agent any
+
     tools {
-            maven 'Maven-3.9'
-        }
+        maven 'Maven-3.9'
+    }
 
     stages {
-
-        stage('Checkout') {
-            steps {
-                echo 'Repository already checked out by Jenkins'
-            }
-        }
 
         stage('Build') {
             steps {
@@ -18,10 +13,36 @@ pipeline {
             }
         }
 
-        stage('Archive') {
+        stage('Archive Jar') {
             steps {
                 archiveArtifacts artifacts: 'target/*.jar'
             }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t learning-pipeline:1.0 .'
+            }
+        }
+
+        stage('Verify Image') {
+            steps {
+                sh 'docker images'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Pipeline completed successfully!'
+        }
+
+        failure {
+            echo 'Pipeline failed.'
+        }
+
+        always {
+            echo 'Pipeline execution finished.'
         }
     }
 }
