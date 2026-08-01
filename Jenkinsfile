@@ -21,13 +21,13 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t learning-pipeline:1.0 .'
+                sh '/usr/local/bin/docker build -t learning-pipeline:1.0 .'
             }
         }
 
         stage('Verify Image') {
             steps {
-                sh 'docker images'
+                sh '/usr/local/bin/docker images'
             }
         }
     }
