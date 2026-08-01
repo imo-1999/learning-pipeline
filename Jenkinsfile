@@ -19,9 +19,20 @@ pipeline {
             }
         }
 
+        stage('Debug Environment') {
+            steps {
+                sh '''
+                    echo "PATH=$PATH"
+                    which docker
+                    which docker-credential-desktop
+                    docker --version
+                '''
+            }
+        }
+
         stage('Build Docker Image') {
             steps {
-                sh '/usr/local/bin/docker build -t learning-pipeline:1.0 .'
+                sh 'docker build -t learning-pipeline:1.0 .'
             }
         }
 
